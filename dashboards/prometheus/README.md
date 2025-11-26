@@ -1,107 +1,89 @@
 # n8n System Health Overview Dashboard
-Monitor your n8n workflow automation platform with this comprehensive Node.js runtime and application health dashboard for Grafana.
+
+A Grafana dashboard providing real-time observability into the n8n Node.js runtime, system resources, event loop health, memory usage, CPU load, and process stability via Prometheus.
 
 ## Overview
-This dashboard provides real-time monitoring of your n8n instance's health and performance metrics. It tracks CPU usage, memory consumption, heap allocation, garbage collection, event loop performance, and cluster status using n8n's native Prometheus metrics.
-Perfect for production environments running self-hosted n8n instances.
+
+This dashboard focuses on low-level system and runtime metrics from n8n’s Prometheus endpoint.  
+It gives production operators a clear view of instance health and performance.
 
 ![Dashboard Preview](./n8n-system-health-overview.png)
 
 ## Features
+
 ### Process & Instance Information
-- **n8n Version** - Current n8n version running
-- **Node.js Version** - Runtime version information
-- **Instance Uptime** - Time since process started (with color-coded thresholds)
-- **Leader Status** - Cluster role indicator (Leader/Follower)
-- **Active Workflows** - Count of currently active workflows
+- n8n version
+- Node.js version
+- Instance uptime (with thresholds)
+- Leader/follower role (cluster)
+- Active workflows
+
 ### CPU & Event Loop Health
-- **CPU Usage** - Total, user, and system CPU utilization breakdown
-- **Event Loop Latency** - p50, p90, p99 percentiles for event loop lag detection
+- CPU breakdown (total/user/system)
+- Event loop latency percentiles (P50/P90/P99)
+
 ### Memory & Heap Usage
-- **Memory (RSS)** - Resident set size memory usage
-- **Heap Memory** - Dynamic heap allocation (used vs total)
-- **Heap Percentage** - Current heap utilization gauge
-### GC & Runtime Resources
-- **GC Duration** - Minor and major garbage collection time
-- **File Descriptors** - Open vs maximum file descriptor limits
-## Prerequisites
-- Grafana 8.0 or higher
-- Prometheus datasource configured in Grafana
-- n8n instance with Prometheus metrics endpoint enabled
+- RSS memory usage
+- Heap used vs total
+- Heap usage percentage
+
+### Garbage Collection & Runtime
+- GC duration by type
+- Open file descriptors
+- Max file descriptor limit
+
+## Requirements
+
+### Software
+- Grafana ≥ 8
+- Prometheus as datasource
+- n8n instance with Prometheus metrics enabled
+
+### Enable n8n Metrics
+Set:
+```
+N8N_METRICS=true
+```
+
+### Prometheus Scrape Config
+```
+scrape_configs:
+  - job_name: "n8n"
+    static_configs:
+      - targets: ["your-n8n-instance:5678"]
+    metrics_path: "/metrics"
+    scrape_interval: 15s
+```
 
 ## Installation
-### 1. Enable n8n Metrics
-Ensure your n8n instance has Prometheus metrics enabled. Add these environment variables:
-```
-N8N_METRICS=true  
-```
-Metrics will be available at `http://your-n8n-instance:5678/metrics`
 
-### 2. Configure Prometheus
-Add n8n as a scrape target in your `prometheus.yml`:
-```
-scrape_configs:  
-  - job_name: 'n8n'  
-    static_configs:  
-      - targets: ['your-n8n-instance:5678']  
-    metrics_path: '/metrics'  
-    scrape_interval: 15s  
-```
+### Option A: JSON Import
+1. Download `n8n-system-health-overview.json`
+2. Import at **Dashboards → Import**
+3. Select your Prometheus datasource
 
-### 3. Import Dashboard
-
-#### Option A: Import from JSON
-1. Download or copy content from `n8n-workflow-execution-analytics.json` from this repository
-2. In Grafana, navigate to **Dashboards** → **Import**
-3. Upload the JSON file or paste the JSON content
-4. Select your PostgreSQL datasource
-5. Click **Import**
-
-#### Option B: Import from Grafana.com
-1. In Grafana, navigate to **Dashboards** → **Import**
-2. Enter dashboard ID: `[24474]` 
-3. Select your PostgreSQL datasource
-4. Click **Import**
+### Option B: Grafana.com
+- Dashboard ID: **24474**
 
 ## Metrics Used
-This dashboard relies on these n8n Prometheus metrics:
 
-|Metric|Description|
-|---|---|
-|`n8n_version_info`|Version information labels|
-|`n8n_nodejs_version_info`|Node.js version labels|
-|`n8n_process_start_time_seconds`|Process start timestamp|
-|`n8n_instance_role_leader`|Cluster leader status (0/1)|
-|`n8n_active_workflow_count`|Number of active workflows|
-|`n8n_process_cpu_seconds_total`|Total CPU time|
-|`n8n_process_cpu_user_seconds_total`|User CPU time|
-|`n8n_process_cpu_system_seconds_total`|System CPU time|
-|`n8n_nodejs_eventloop_lag_p*_seconds`|Event loop lag percentiles|
-|`n8n_process_resident_memory_bytes`|RSS memory usage|
-|`n8n_nodejs_heap_size_used_bytes`|Heap memory used|
-|`n8n_nodejs_heap_size_total_bytes`|Total heap size|
-|`n8n_nodejs_gc_duration_seconds_sum`|GC duration by type|
-|`n8n_process_open_fds`|Open file descriptors|
-|`n8n_process_max_fds`|Maximum file descriptors|
+| Metric | Description |
+|--------|-------------|
+| n8n_version_info | n8n version |
+| n8n_nodejs_version_info | Node.js version |
+| n8n_process_start_time_seconds | Process start time |
+| n8n_instance_role_leader | Leader status |
+| n8n_active_workflow_count | Active workflows |
+| n8n_process_cpu_seconds_total | Total CPU |
+| n8n_process_cpu_user_seconds_total | User CPU |
+| n8n_process_cpu_system_seconds_total | System CPU |
+| n8n_nodejs_eventloop_lag_p\*_seconds | Event loop percentiles |
+| n8n_process_resident_memory_bytes | RSS memory |
+| n8n_nodejs_heap_size_used_bytes | Heap used |
+| n8n_nodejs_heap_size_total_bytes | Heap total |
+| n8n_nodejs_gc_duration_seconds_sum | GC duration |
+| n8n_process_open_fds | Open file descriptors |
+| n8n_process_max_fds | Max file descriptors |
 
-## Understanding the Metrics
-### Heap Memory Behavior
-**Important:** High heap percentage (80-95%) is **NORMAL** for Node.js applications! The Node.js V8 engine dynamically manages heap size and will expand it as needed.
-
-⚠️ **Watch for these warning signs instead:**
-- Heap total continuously growing over time
-- Excessive garbage collection activity
-- Sustained high memory (RSS) growth
-
-### Event Loop Latency Thresholds
-- **Green** (< 50ms) - Healthy
-- **Yellow** (50-100ms) - Monitor
-- **Orange** (100-150ms) - Investigate
-- **Red** (> 150ms) - Action required
-
-### CPU Usage Thresholds
-- **Green** (< 70%) - Normal operation
-- **Yellow** (70-85%) - Elevated
-- **Orange** (85-95%) - High load
-- **Red** (> 95%) - Critical
-
+## Notes
+This dashboard is a system-level complement to the PostgreSQL workflow analytics dashboard.
