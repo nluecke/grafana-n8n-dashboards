@@ -1,0 +1,1727 @@
+apiVersion: dashboard.grafana.app/v2beta1
+kind: Dashboard
+metadata:
+  name: adfcxfk
+  generation: 2
+  creationTimestamp: '2025-11-26T14:15:48Z'
+  labels: {}
+  annotations: {}
+spec:
+  annotations:
+    - kind: AnnotationQuery
+      spec:
+        builtIn: true
+        enable: true
+        hide: true
+        iconColor: rgba(0, 211, 255, 1)
+        name: Annotations & Alerts
+        query:
+          group: grafana
+          kind: DataQuery
+          spec: {}
+          version: v0
+  cursorSync: 'Off'
+  description: >-
+    Comprehensive analytics dashboard for n8n workflow automation platform.
+    Monitor workflow execution performance, track success rates, identify
+    bottlenecks, and optimize your automation workflows.  
+  editable: true
+  elements:
+    panel-16:
+      kind: Panel
+      spec:
+        data:
+          kind: QueryGroup
+          spec:
+            queries:
+              - kind: PanelQuery
+                spec:
+                  hidden: false
+                  query:
+                    group: grafana-postgresql-datasource
+                    kind: DataQuery
+                    spec:
+                      editorMode: code
+                      format: table
+                      range: true
+                      rawQuery: true
+                      rawSql: SELECT COUNT(*) AS value FROM workflow_entity;
+                      sql:
+                        columns:
+                          - parameters: []
+                            type: function
+                        groupBy:
+                          - property:
+                              type: string
+                            type: groupBy
+                        limit: 50
+                    version: v0
+                  refId: A
+            queryOptions: {}
+            transformations: []
+        description: Total number of workflows in the system
+        id: 16
+        links: []
+        title: Total workflows
+        transparent: true
+        vizConfig:
+          group: stat
+          kind: VizConfig
+          spec:
+            fieldConfig:
+              defaults:
+                color:
+                  mode: thresholds
+                thresholds:
+                  mode: absolute
+                  steps:
+                    - color: blue
+                      value: 0
+                unit: short
+              overrides: []
+            options:
+              colorMode: background
+              graphMode: none
+              justifyMode: auto
+              orientation: auto
+              percentChangeColorMode: standard
+              reduceOptions:
+                calcs:
+                  - lastNotNull
+                fields: ''
+                values: true
+              showPercentChange: false
+              textMode: value
+              wideLayout: true
+          version: 12.3.0
+    panel-17:
+      kind: Panel
+      spec:
+        data:
+          kind: QueryGroup
+          spec:
+            queries:
+              - kind: PanelQuery
+                spec:
+                  hidden: false
+                  query:
+                    group: grafana-postgresql-datasource
+                    kind: DataQuery
+                    spec:
+                      format: table
+                      range: true
+                      rawSql: >-
+                        SELECT COUNT(*) AS value FROM workflow_entity WHERE
+                        active = true;
+                    version: v0
+                  refId: A
+            queryOptions: {}
+            transformations: []
+        description: Number of currently active workflows
+        id: 17
+        links: []
+        title: Active workflows
+        transparent: true
+        vizConfig:
+          group: stat
+          kind: VizConfig
+          spec:
+            fieldConfig:
+              defaults:
+                color:
+                  mode: thresholds
+                thresholds:
+                  mode: absolute
+                  steps:
+                    - color: green
+                      value: 0
+                unit: short
+              overrides: []
+            options:
+              colorMode: background
+              graphMode: area
+              justifyMode: auto
+              orientation: auto
+              percentChangeColorMode: standard
+              reduceOptions:
+                calcs:
+                  - lastNotNull
+                fields: ''
+                values: true
+              showPercentChange: false
+              textMode: value
+              wideLayout: true
+          version: 12.3.0
+    panel-18:
+      kind: Panel
+      spec:
+        data:
+          kind: QueryGroup
+          spec:
+            queries:
+              - kind: PanelQuery
+                spec:
+                  hidden: false
+                  query:
+                    group: grafana-postgresql-datasource
+                    kind: DataQuery
+                    spec:
+                      format: table
+                      range: true
+                      rawSql: >-
+                        SELECT COUNT(*) AS value FROM execution_entity WHERE
+                        $__timeFilter("startedAt");
+                    version: v0
+                  refId: A
+            queryOptions: {}
+            transformations: []
+        description: Total execution count in selected time range
+        id: 18
+        links: []
+        title: Total executions
+        transparent: true
+        vizConfig:
+          group: stat
+          kind: VizConfig
+          spec:
+            fieldConfig:
+              defaults:
+                color:
+                  mode: thresholds
+                thresholds:
+                  mode: absolute
+                  steps:
+                    - color: blue
+                      value: 0
+                unit: short
+              overrides: []
+            options:
+              colorMode: background
+              graphMode: area
+              justifyMode: auto
+              orientation: auto
+              percentChangeColorMode: standard
+              reduceOptions:
+                calcs:
+                  - lastNotNull
+                fields: ''
+                values: true
+              showPercentChange: false
+              textMode: value
+              wideLayout: true
+          version: 12.3.0
+    panel-19:
+      kind: Panel
+      spec:
+        data:
+          kind: QueryGroup
+          spec:
+            queries:
+              - kind: PanelQuery
+                spec:
+                  hidden: false
+                  query:
+                    group: grafana-postgresql-datasource
+                    kind: DataQuery
+                    spec:
+                      format: table
+                      range: true
+                      rawSql: >-
+                        SELECT ROUND(100.0 * SUM(CASE WHEN status = 'success'
+                        THEN 1 ELSE 0 END) / NULLIF(COUNT(*), 0), 2) AS value
+                        FROM execution_entity WHERE $__timeFilter("startedAt");
+                    version: v0
+                  refId: A
+            queryOptions: {}
+            transformations: []
+        description: Percentage of successful executions in time range
+        id: 19
+        links: []
+        title: Success rate
+        transparent: true
+        vizConfig:
+          group: stat
+          kind: VizConfig
+          spec:
+            fieldConfig:
+              defaults:
+                color:
+                  mode: thresholds
+                max: 100
+                min: 0
+                thresholds:
+                  mode: absolute
+                  steps:
+                    - color: red
+                      value: 0
+                    - color: yellow
+                      value: 80
+                    - color: green
+                      value: 95
+                unit: percent
+              overrides: []
+            options:
+              colorMode: background
+              graphMode: area
+              justifyMode: auto
+              orientation: auto
+              percentChangeColorMode: standard
+              reduceOptions:
+                calcs:
+                  - lastNotNull
+                fields: ''
+                values: true
+              showPercentChange: false
+              textMode: value
+              wideLayout: true
+          version: 12.3.0
+    panel-20:
+      kind: Panel
+      spec:
+        data:
+          kind: QueryGroup
+          spec:
+            queries:
+              - kind: PanelQuery
+                spec:
+                  hidden: false
+                  query:
+                    group: grafana-postgresql-datasource
+                    kind: DataQuery
+                    spec:
+                      format: table
+                      range: true
+                      rawSql: >-
+                        SELECT COUNT(*) AS value FROM execution_entity WHERE
+                        status IN ('error', 'crashed') AND
+                        $__timeFilter("startedAt");
+                    version: v0
+                  refId: A
+            queryOptions: {}
+            transformations: []
+        description: Number of failed executions (error or crashed) in time range
+        id: 20
+        links: []
+        title: Failed executions
+        transparent: true
+        vizConfig:
+          group: stat
+          kind: VizConfig
+          spec:
+            fieldConfig:
+              defaults:
+                color:
+                  mode: thresholds
+                thresholds:
+                  mode: absolute
+                  steps:
+                    - color: green
+                      value: 0
+                    - color: yellow
+                      value: 10
+                    - color: red
+                      value: 50
+                unit: short
+              overrides: []
+            options:
+              colorMode: background
+              graphMode: area
+              justifyMode: auto
+              orientation: auto
+              percentChangeColorMode: standard
+              reduceOptions:
+                calcs:
+                  - lastNotNull
+                fields: ''
+                values: true
+              showPercentChange: false
+              textMode: value
+              wideLayout: true
+          version: 12.3.0
+    panel-21:
+      kind: Panel
+      spec:
+        data:
+          kind: QueryGroup
+          spec:
+            queries:
+              - kind: PanelQuery
+                spec:
+                  hidden: false
+                  query:
+                    group: grafana-postgresql-datasource
+                    kind: DataQuery
+                    spec:
+                      editorMode: code
+                      format: table
+                      range: true
+                      rawQuery: true
+                      rawSql: |
+                        SELECT COUNT(*) AS value
+                        FROM execution_entity
+                        WHERE finished = false
+                          AND "stoppedAt" IS NULL
+                          AND "startedAt" IS NOT NULL;
+                      sql:
+                        columns:
+                          - parameters: []
+                            type: function
+                        groupBy:
+                          - property:
+                              type: string
+                            type: groupBy
+                        limit: 50
+                    version: v0
+                  refId: A
+            queryOptions: {}
+            transformations: []
+        description: Executions currently in progress
+        id: 21
+        links: []
+        title: Currently running
+        transparent: true
+        vizConfig:
+          group: stat
+          kind: VizConfig
+          spec:
+            fieldConfig:
+              defaults:
+                color:
+                  mode: thresholds
+                thresholds:
+                  mode: absolute
+                  steps:
+                    - color: green
+                      value: 0
+                    - color: yellow
+                      value: 5
+                    - color: orange
+                      value: 10
+                unit: short
+              overrides: []
+            options:
+              colorMode: background
+              graphMode: none
+              justifyMode: auto
+              orientation: auto
+              percentChangeColorMode: standard
+              reduceOptions:
+                calcs:
+                  - lastNotNull
+                fields: ''
+                values: true
+              showPercentChange: false
+              textMode: value
+              wideLayout: true
+          version: 12.3.0
+    panel-24:
+      kind: Panel
+      spec:
+        data:
+          kind: QueryGroup
+          spec:
+            queries:
+              - kind: PanelQuery
+                spec:
+                  hidden: false
+                  query:
+                    group: grafana-postgresql-datasource
+                    kind: DataQuery
+                    spec:
+                      editorMode: code
+                      format: table
+                      range: true
+                      rawQuery: true
+                      rawSql: >-
+                        SELECT percentile_cont(0.95) WITHIN GROUP (ORDER BY
+                        EXTRACT(epoch FROM ("stoppedAt" - "startedAt"))) AS "P95
+                        duration (24h)" FROM execution_entity WHERE "startedAt"
+                        >= NOW() - INTERVAL '24 hours' AND "stoppedAt" IS NOT
+                        NULL;
+                      sql:
+                        columns:
+                          - parameters: []
+                            type: function
+                        groupBy:
+                          - property:
+                              type: string
+                            type: groupBy
+                        limit: 50
+                    version: v0
+                  refId: A
+              - kind: PanelQuery
+                spec:
+                  hidden: false
+                  query:
+                    group: grafana-postgresql-datasource
+                    kind: DataQuery
+                    spec:
+                      dataset: n8n_data
+                      editorMode: code
+                      format: table
+                      rawQuery: true
+                      rawSql: >-
+                        SELECT MAX(EXTRACT(epoch FROM ("stoppedAt" -
+                        "startedAt"))) AS "Max duration (24h)" FROM
+                        execution_entity WHERE "startedAt" >= NOW() - INTERVAL
+                        '24 hours' AND "stoppedAt" IS NOT NULL;
+                      sql:
+                        columns:
+                          - parameters: []
+                            type: function
+                        groupBy:
+                          - property:
+                              type: string
+                            type: groupBy
+                        limit: 50
+                    version: v0
+                  refId: B
+              - kind: PanelQuery
+                spec:
+                  hidden: false
+                  query:
+                    group: grafana-postgresql-datasource
+                    kind: DataQuery
+                    spec:
+                      dataset: n8n_data
+                      editorMode: code
+                      format: table
+                      rawQuery: true
+                      rawSql: >-
+                        SELECT AVG(EXTRACT(epoch FROM ("stoppedAt" -
+                        "startedAt"))) AS "Avg duration (24h)" FROM
+                        execution_entity WHERE "startedAt" >= NOW() - INTERVAL
+                        '24 hours' AND "stoppedAt" IS NOT NULL;
+                      sql:
+                        columns:
+                          - parameters: []
+                            type: function
+                        groupBy:
+                          - property:
+                              type: string
+                            type: groupBy
+                        limit: 50
+                    version: v0
+                  refId: C
+              - kind: PanelQuery
+                spec:
+                  hidden: false
+                  query:
+                    group: grafana-postgresql-datasource
+                    kind: DataQuery
+                    spec:
+                      dataset: n8n_data
+                      editorMode: code
+                      format: table
+                      rawQuery: true
+                      rawSql: >-
+                        SELECT percentile_cont(0.50) WITHIN GROUP (ORDER BY
+                        EXTRACT(epoch FROM ("stoppedAt" - "startedAt"))) AS
+                        "Median duration (24h)" FROM execution_entity WHERE
+                        "startedAt" >= NOW() - INTERVAL '24 hours' AND
+                        "stoppedAt" IS NOT NULL;
+                      sql:
+                        columns:
+                          - parameters: []
+                            type: function
+                        groupBy:
+                          - property:
+                              type: string
+                            type: groupBy
+                        limit: 50
+                    version: v0
+                  refId: D
+            queryOptions: {}
+            transformations: []
+        description: >-
+          P95, Maximum, Average, and Median execution duration in the last 24
+          hours
+        id: 24
+        links: []
+        title: P95, Max, Avg & Median duration (24h)
+        transparent: true
+        vizConfig:
+          group: stat
+          kind: VizConfig
+          spec:
+            fieldConfig:
+              defaults:
+                color:
+                  mode: thresholds
+                decimals: 2
+                thresholds:
+                  mode: absolute
+                  steps:
+                    - color: green
+                      value: 0
+                    - color: yellow
+                      value: 60
+                    - color: red
+                      value: 120
+                unit: s
+              overrides: []
+            options:
+              colorMode: background
+              graphMode: none
+              justifyMode: auto
+              orientation: auto
+              percentChangeColorMode: standard
+              reduceOptions:
+                calcs:
+                  - lastNotNull
+                fields: ''
+                values: true
+              showPercentChange: false
+              textMode: value_and_name
+              wideLayout: true
+          version: 12.3.0
+    panel-26:
+      kind: Panel
+      spec:
+        data:
+          kind: QueryGroup
+          spec:
+            queries:
+              - kind: PanelQuery
+                spec:
+                  hidden: false
+                  query:
+                    group: grafana-postgresql-datasource
+                    kind: DataQuery
+                    spec:
+                      format: time_series
+                      range: true
+                      rawSql: |-
+                        SELECT
+                          $__timeGroupAlias("startedAt", '1h'),
+                          COUNT(*) FILTER (WHERE "status" = 'success') AS success,
+                          COUNT(*) FILTER (WHERE "status" = 'error') AS error,
+                          COUNT(*) FILTER (WHERE "status" = 'crashed') AS crashed
+                        FROM execution_entity
+                        WHERE $__timeFilter("startedAt")
+                        GROUP BY 1
+                        ORDER BY 1;
+                    version: v0
+                  refId: A
+            queryOptions: {}
+            transformations: []
+        description: Execution counts over time by status (success, error, crashed)
+        id: 26
+        links: []
+        title: Executions over time by status
+        transparent: true
+        vizConfig:
+          group: timeseries
+          kind: VizConfig
+          spec:
+            fieldConfig:
+              defaults:
+                color:
+                  mode: palette-classic
+                custom:
+                  axisBorderShow: false
+                  axisCenteredZero: false
+                  axisColorMode: text
+                  axisLabel: ''
+                  axisPlacement: auto
+                  barAlignment: 0
+                  barWidthFactor: 0.6
+                  drawStyle: line
+                  fillOpacity: 10
+                  gradientMode: none
+                  hideFrom:
+                    legend: false
+                    tooltip: false
+                    viz: false
+                  insertNulls: false
+                  lineInterpolation: smooth
+                  lineWidth: 2
+                  pointSize: 5
+                  scaleDistribution:
+                    type: linear
+                  showPoints: never
+                  showValues: false
+                  spanNulls: false
+                  stacking:
+                    group: A
+                    mode: none
+                  thresholdsStyle:
+                    mode: 'off'
+                thresholds:
+                  mode: absolute
+                  steps:
+                    - color: green
+                      value: 0
+                    - color: red
+                      value: 80
+                unit: short
+              overrides:
+                - matcher:
+                    id: byName
+                    options: success
+                  properties:
+                    - id: color
+                      value:
+                        fixedColor: green
+                        mode: fixed
+                - matcher:
+                    id: byName
+                    options: error
+                  properties:
+                    - id: color
+                      value:
+                        fixedColor: red
+                        mode: fixed
+                - matcher:
+                    id: byName
+                    options: crashed
+                  properties:
+                    - id: color
+                      value:
+                        fixedColor: orange
+                        mode: fixed
+            options:
+              legend:
+                calcs:
+                  - sum
+                  - mean
+                displayMode: table
+                placement: bottom
+                showLegend: true
+              tooltip:
+                hideZeros: false
+                mode: multi
+                sort: desc
+          version: 12.3.0
+    panel-27:
+      kind: Panel
+      spec:
+        data:
+          kind: QueryGroup
+          spec:
+            queries:
+              - kind: PanelQuery
+                spec:
+                  hidden: false
+                  query:
+                    group: grafana-postgresql-datasource
+                    kind: DataQuery
+                    spec:
+                      format: time_series
+                      range: true
+                      rawSql: |-
+                        SELECT
+                          $__timeGroupAlias("startedAt", '1h'),
+                          percentile_cont(0.50) WITHIN GROUP (ORDER BY EXTRACT(epoch FROM ("stoppedAt" - "startedAt"))) AS p50,
+                          percentile_cont(0.95) WITHIN GROUP (ORDER BY EXTRACT(epoch FROM ("stoppedAt" - "startedAt"))) AS p95,
+                          percentile_cont(0.99) WITHIN GROUP (ORDER BY EXTRACT(epoch FROM ("stoppedAt" - "startedAt"))) AS p99
+                        FROM execution_entity
+                        WHERE $__timeFilter("startedAt")
+                          AND "stoppedAt" IS NOT NULL
+                        GROUP BY 1
+                        ORDER BY 1;
+                    version: v0
+                  refId: A
+            queryOptions: {}
+            transformations: []
+        description: Execution duration percentiles over time (P50, P95, P99)
+        id: 27
+        links: []
+        title: Execution duration percentiles
+        transparent: true
+        vizConfig:
+          group: timeseries
+          kind: VizConfig
+          spec:
+            fieldConfig:
+              defaults:
+                color:
+                  mode: palette-classic
+                custom:
+                  axisBorderShow: false
+                  axisCenteredZero: false
+                  axisColorMode: text
+                  axisLabel: ''
+                  axisPlacement: auto
+                  barAlignment: 0
+                  barWidthFactor: 0.6
+                  drawStyle: line
+                  fillOpacity: 10
+                  gradientMode: none
+                  hideFrom:
+                    legend: false
+                    tooltip: false
+                    viz: false
+                  insertNulls: false
+                  lineInterpolation: smooth
+                  lineWidth: 2
+                  pointSize: 5
+                  scaleDistribution:
+                    type: linear
+                  showPoints: never
+                  showValues: false
+                  spanNulls: false
+                  stacking:
+                    group: A
+                    mode: none
+                  thresholdsStyle:
+                    mode: 'off'
+                thresholds:
+                  mode: absolute
+                  steps:
+                    - color: green
+                      value: 0
+                    - color: red
+                      value: 80
+                unit: s
+              overrides: []
+            options:
+              legend:
+                calcs:
+                  - last
+                  - max
+                displayMode: table
+                placement: bottom
+                showLegend: true
+              tooltip:
+                hideZeros: false
+                mode: multi
+                sort: none
+          version: 12.3.0
+    panel-28:
+      kind: Panel
+      spec:
+        data:
+          kind: QueryGroup
+          spec:
+            queries:
+              - kind: PanelQuery
+                spec:
+                  hidden: false
+                  query:
+                    group: grafana-postgresql-datasource
+                    kind: DataQuery
+                    spec:
+                      format: table
+                      range: true
+                      rawSql: >-
+                        SELECT
+                          w."name" AS workflow_name,
+                          COUNT(*) FILTER (WHERE e."status" IN ('error', 'crashed')) AS failures,
+                          COUNT(*) AS total_executions,
+                          ROUND(100.0 * SUM(CASE WHEN e."status" IN ('error', 'crashed') THEN 1 ELSE 0 END) / NULLIF(COUNT(*), 0), 2) AS failure_rate_pct,
+                          MAX(e."startedAt") AS last_failure
+                        FROM execution_entity e
+
+                        LEFT JOIN workflow_entity w ON w."id" = e."workflowId"
+
+                        WHERE $__timeFilter(e."startedAt")
+
+                        GROUP BY e."workflowId", w."name"
+
+                        HAVING COUNT(*) FILTER (WHERE e."status" IN ('error',
+                        'crashed')) > 0
+
+                        ORDER BY failures DESC
+
+                        LIMIT 10;
+                    version: v0
+                  refId: A
+            queryOptions: {}
+            transformations: []
+        description: Top 10 workflows with the most failures
+        id: 28
+        links: []
+        title: Workflows with most failures
+        transparent: true
+        vizConfig:
+          group: table
+          kind: VizConfig
+          spec:
+            fieldConfig:
+              defaults:
+                custom:
+                  align: left
+                  cellOptions:
+                    type: auto
+                  footer:
+                    reducers: []
+                  inspect: false
+                thresholds:
+                  mode: absolute
+                  steps:
+                    - color: green
+                      value: 0
+              overrides:
+                - matcher:
+                    id: byName
+                    options: failures
+                  properties:
+                    - id: custom.cellOptions
+                      value:
+                        mode: gradient
+                        type: color-background
+                    - id: color
+                      value:
+                        mode: continuous-RdYlGr
+                        seriesBy: last
+                    - id: max
+                      value: 100
+                    - id: min
+                      value: 0
+                - matcher:
+                    id: byName
+                    options: failure_rate_pct
+                  properties:
+                    - id: unit
+                      value: percent
+                    - id: custom.cellOptions
+                      value:
+                        mode: gradient
+                        type: color-background
+                    - id: color
+                      value:
+                        mode: continuous-RdYlGr
+                        seriesBy: last
+                    - id: max
+                      value: 100
+                    - id: min
+                      value: 0
+            options:
+              cellHeight: sm
+              showHeader: true
+              sortBy:
+                - desc: true
+                  displayName: failures
+          version: 12.3.0
+    panel-29:
+      kind: Panel
+      spec:
+        data:
+          kind: QueryGroup
+          spec:
+            queries:
+              - kind: PanelQuery
+                spec:
+                  hidden: false
+                  query:
+                    group: grafana-postgresql-datasource
+                    kind: DataQuery
+                    spec:
+                      format: table
+                      range: true
+                      rawSql: |-
+                        SELECT
+                          w."name" AS workflow_name,
+                          ROUND(AVG(EXTRACT(epoch FROM (e."stoppedAt" - e."startedAt")))::numeric, 2) AS avg_duration_seconds,
+                          ROUND(MAX(EXTRACT(epoch FROM (e."stoppedAt" - e."startedAt")))::numeric, 2) AS max_duration_seconds,
+                          COUNT(*) AS executions_count
+                        FROM execution_entity e
+                        LEFT JOIN workflow_entity w ON w."id" = e."workflowId"
+                        WHERE $__timeFilter(e."startedAt")
+                          AND e."stoppedAt" IS NOT NULL
+                        GROUP BY e."workflowId", w."name"
+                        ORDER BY avg_duration_seconds DESC
+                        LIMIT 10;
+                    version: v0
+                  refId: A
+            queryOptions: {}
+            transformations: []
+        description: Top 10 slowest workflows by average duration
+        id: 29
+        links: []
+        title: Slowest workflows (by avg duration)
+        transparent: true
+        vizConfig:
+          group: table
+          kind: VizConfig
+          spec:
+            fieldConfig:
+              defaults:
+                custom:
+                  align: left
+                  cellOptions:
+                    type: auto
+                  footer:
+                    reducers: []
+                  inspect: false
+                thresholds:
+                  mode: absolute
+                  steps:
+                    - color: green
+                      value: 0
+              overrides:
+                - matcher:
+                    id: byName
+                    options: avg_duration_seconds
+                  properties:
+                    - id: unit
+                      value: s
+                    - id: custom.cellOptions
+                      value:
+                        mode: gradient
+                        type: color-background
+                    - id: color
+                      value:
+                        mode: continuous-GrYlRd
+                        seriesBy: last
+                - matcher:
+                    id: byName
+                    options: max_duration_seconds
+                  properties:
+                    - id: unit
+                      value: s
+            options:
+              cellHeight: sm
+              showHeader: true
+              sortBy:
+                - desc: true
+                  displayName: avg_duration_seconds
+          version: 12.3.0
+    panel-30:
+      kind: Panel
+      spec:
+        data:
+          kind: QueryGroup
+          spec:
+            queries:
+              - kind: PanelQuery
+                spec:
+                  hidden: false
+                  query:
+                    group: grafana-postgresql-datasource
+                    kind: DataQuery
+                    spec:
+                      format: table
+                      range: true
+                      rawSql: |-
+                        SELECT
+                          w."name" AS workflow_name,
+                          w."active",
+                          COUNT(*) AS executions,
+                          ROUND(100.0 * SUM(CASE WHEN e."status" = 'success' THEN 1 ELSE 0 END) / NULLIF(COUNT(*), 0), 2) AS success_rate,
+                          MAX(e."startedAt") AS last_execution
+                        FROM execution_entity e
+                        JOIN workflow_entity w ON e."workflowId" = w."id"
+                        WHERE $__timeFilter(e."startedAt")
+                        GROUP BY e."workflowId", w."name", w."active"
+                        ORDER BY executions DESC
+                        LIMIT 10;
+                    version: v0
+                  refId: A
+            queryOptions: {}
+            transformations: []
+        description: Most frequently executed workflows
+        id: 30
+        links: []
+        title: Most executed workflows
+        transparent: true
+        vizConfig:
+          group: table
+          kind: VizConfig
+          spec:
+            fieldConfig:
+              defaults:
+                custom:
+                  align: left
+                  cellOptions:
+                    type: auto
+                  footer:
+                    reducers: []
+                  inspect: false
+                thresholds:
+                  mode: absolute
+                  steps:
+                    - color: green
+                      value: 0
+              overrides:
+                - matcher:
+                    id: byName
+                    options: executions
+                  properties:
+                    - id: custom.cellOptions
+                      value:
+                        mode: gradient
+                        type: color-background
+                    - id: color
+                      value:
+                        mode: continuous-BlPu
+                        seriesBy: last
+                - matcher:
+                    id: byName
+                    options: success_rate
+                  properties:
+                    - id: unit
+                      value: percent
+                    - id: custom.cellOptions
+                      value:
+                        mode: gradient
+                        type: color-background
+                    - id: color
+                      value:
+                        mode: continuous-RdYlGr
+                        seriesBy: last
+                    - id: max
+                      value: 100
+                    - id: min
+                      value: 0
+            options:
+              cellHeight: sm
+              showHeader: true
+              sortBy:
+                - desc: true
+                  displayName: executions
+          version: 12.3.0
+    panel-31:
+      kind: Panel
+      spec:
+        data:
+          kind: QueryGroup
+          spec:
+            queries:
+              - kind: PanelQuery
+                spec:
+                  hidden: false
+                  query:
+                    group: grafana-postgresql-datasource
+                    kind: DataQuery
+                    spec:
+                      editorMode: code
+                      format: table
+                      range: true
+                      rawQuery: true
+                      rawSql: |-
+                        SELECT
+                          DATE_TRUNC('day', "startedAt") AS time,
+                          ROUND(100.0 * SUM(CASE WHEN status = 'success' THEN 1 ELSE 0 END) / NULLIF(COUNT(*), 0), 2) AS success_rate
+                        FROM execution_entity
+                        WHERE $__timeFilter("startedAt")
+                          AND status IN ('success', 'error', 'crashed')
+                        GROUP BY 1
+                        ORDER BY 1;
+                      sql:
+                        columns:
+                          - parameters: []
+                            type: function
+                        groupBy:
+                          - property:
+                              type: string
+                            type: groupBy
+                        limit: 50
+                    version: v0
+                  refId: A
+            queryOptions:
+              hideTimeOverride: true
+              timeFrom: 7d
+            transformations: []
+        description: Success rate trend by day
+        id: 31
+        links: []
+        title: Daily success rate trend
+        transparent: true
+        vizConfig:
+          group: barchart
+          kind: VizConfig
+          spec:
+            fieldConfig:
+              defaults:
+                color:
+                  mode: palette-classic
+                custom:
+                  axisBorderShow: false
+                  axisCenteredZero: false
+                  axisColorMode: text
+                  axisLabel: ''
+                  axisPlacement: auto
+                  fillOpacity: 80
+                  gradientMode: hue
+                  hideFrom:
+                    legend: false
+                    tooltip: false
+                    viz: false
+                  lineWidth: 1
+                  scaleDistribution:
+                    type: linear
+                  thresholdsStyle:
+                    mode: 'off'
+                thresholds:
+                  mode: absolute
+                  steps:
+                    - color: red
+                      value: 0
+                    - color: '#EAB839'
+                      value: 80
+                    - color: green
+                      value: 95
+                unit: percent
+              overrides: []
+            options:
+              barRadius: 0.1
+              barWidth: 0.97
+              fullHighlight: false
+              groupWidth: 0.7
+              legend:
+                calcs: []
+                displayMode: list
+                placement: bottom
+                showLegend: false
+              orientation: auto
+              showValue: auto
+              stacking: none
+              tooltip:
+                hideZeros: false
+                mode: single
+                sort: none
+              xTickLabelRotation: 0
+              xTickLabelSpacing: 0
+          version: 12.3.0
+    panel-33:
+      kind: Panel
+      spec:
+        data:
+          kind: QueryGroup
+          spec:
+            queries:
+              - kind: PanelQuery
+                spec:
+                  hidden: false
+                  query:
+                    group: grafana-postgresql-datasource
+                    kind: DataQuery
+                    spec:
+                      editorMode: code
+                      format: time_series
+                      range: true
+                      rawQuery: true
+                      rawSql: |
+                        SELECT
+                          $__timeGroupAlias("startedAt", '1h'),
+                          COUNT(*) FILTER (WHERE "finished" = false AND "status" = 'new') AS queued,
+                          COUNT(*) FILTER (WHERE "finished" = false AND "status" != 'new') AS running
+                        FROM execution_entity
+                        WHERE $__timeFilter("startedAt")
+                        GROUP BY 1
+                        ORDER BY 1;
+                      sql:
+                        columns:
+                          - parameters: []
+                            type: function
+                        groupBy:
+                          - property:
+                              type: string
+                            type: groupBy
+                        limit: 50
+                    version: v0
+                  refId: A
+            queryOptions: {}
+            transformations: []
+        description: Execution queue depth over time showing queued and running executions
+        id: 33
+        links: []
+        title: Execution queue depth
+        transparent: true
+        vizConfig:
+          group: timeseries
+          kind: VizConfig
+          spec:
+            fieldConfig:
+              defaults:
+                color:
+                  mode: palette-classic
+                custom:
+                  axisBorderShow: false
+                  axisCenteredZero: false
+                  axisColorMode: text
+                  axisLabel: ''
+                  axisPlacement: auto
+                  barAlignment: 0
+                  barWidthFactor: 0.6
+                  drawStyle: line
+                  fillOpacity: 10
+                  gradientMode: none
+                  hideFrom:
+                    legend: false
+                    tooltip: false
+                    viz: false
+                  insertNulls: false
+                  lineInterpolation: smooth
+                  lineWidth: 2
+                  pointSize: 5
+                  scaleDistribution:
+                    type: linear
+                  showPoints: never
+                  showValues: false
+                  spanNulls: false
+                  stacking:
+                    group: A
+                    mode: none
+                  thresholdsStyle:
+                    mode: 'off'
+                thresholds:
+                  mode: absolute
+                  steps:
+                    - color: green
+                      value: 0
+                    - color: red
+                      value: 80
+                unit: short
+              overrides: []
+            options:
+              legend:
+                calcs:
+                  - last
+                  - max
+                displayMode: table
+                placement: bottom
+                showLegend: true
+              tooltip:
+                hideZeros: false
+                mode: multi
+                sort: none
+          version: 12.3.0
+    panel-34:
+      kind: Panel
+      spec:
+        data:
+          kind: QueryGroup
+          spec:
+            queries:
+              - kind: PanelQuery
+                spec:
+                  hidden: false
+                  query:
+                    group: grafana-postgresql-datasource
+                    kind: DataQuery
+                    spec:
+                      format: table
+                      range: true
+                      rawSql: |-
+                        SELECT
+                          "name" AS workflow_name,
+                          "active",
+                          "updatedAt",
+                          "createdAt"
+                        FROM workflow_entity
+                        ORDER BY "updatedAt" DESC
+                        LIMIT 20;
+                    version: v0
+                  refId: A
+            queryOptions: {}
+            transformations: []
+        description: Workflows with recent updates or activation changes
+        id: 34
+        links: []
+        title: Recently updated workflows
+        transparent: true
+        vizConfig:
+          group: table
+          kind: VizConfig
+          spec:
+            fieldConfig:
+              defaults:
+                custom:
+                  align: left
+                  cellOptions:
+                    type: auto
+                  footer:
+                    reducers: []
+                  inspect: false
+                thresholds:
+                  mode: absolute
+                  steps:
+                    - color: green
+                      value: 0
+              overrides:
+                - matcher:
+                    id: byName
+                    options: active
+                  properties:
+                    - id: custom.cellOptions
+                      value:
+                        type: color-text
+                    - id: mappings
+                      value:
+                        - options:
+                            'false':
+                              color: red
+                              index: 1
+                              text: Inactive
+                            'true':
+                              color: green
+                              index: 0
+                              text: Active
+                          type: value
+                - matcher:
+                    id: byName
+                    options: updatedAt
+                  properties:
+                    - id: custom.cellOptions
+                      value:
+                        type: auto
+                    - id: unit
+                      value: dateTimeFromNow
+            options:
+              cellHeight: sm
+              showHeader: true
+              sortBy:
+                - desc: true
+                  displayName: updatedAt
+          version: 12.3.0
+    panel-35:
+      kind: Panel
+      spec:
+        data:
+          kind: QueryGroup
+          spec:
+            queries:
+              - kind: PanelQuery
+                spec:
+                  hidden: false
+                  query:
+                    group: grafana-postgresql-datasource
+                    kind: DataQuery
+                    spec:
+                      format: table
+                      range: true
+                      rawSql: |-
+                        SELECT
+                          w."name" AS workflow_name,
+                          STRING_AGG(t."name", ', ') AS tags,
+                          w."active",
+                          w."updatedAt"
+                        FROM workflow_entity w
+                        LEFT JOIN workflows_tags wt ON wt."workflowId" = w."id"
+                        LEFT JOIN tag_entity t ON t."id" = wt."tagId"
+                        GROUP BY w."id", w."name", w."active", w."updatedAt"
+                        HAVING COUNT(t."id") > 0
+                        ORDER BY w."updatedAt" DESC;
+                    version: v0
+                  refId: A
+            queryOptions: {}
+            transformations: []
+        description: Workflows tagged for categorization
+        id: 35
+        links: []
+        title: Workflows by tags
+        transparent: true
+        vizConfig:
+          group: table
+          kind: VizConfig
+          spec:
+            fieldConfig:
+              defaults:
+                custom:
+                  align: left
+                  cellOptions:
+                    type: auto
+                  footer:
+                    reducers: []
+                  inspect: false
+                thresholds:
+                  mode: absolute
+                  steps:
+                    - color: green
+                      value: 0
+              overrides: []
+            options:
+              cellHeight: sm
+              showHeader: true
+              sortBy: []
+          version: 12.3.0
+    panel-36:
+      kind: Panel
+      spec:
+        data:
+          kind: QueryGroup
+          spec:
+            queries:
+              - kind: PanelQuery
+                spec:
+                  hidden: false
+                  query:
+                    group: grafana-postgresql-datasource
+                    kind: DataQuery
+                    spec:
+                      editorMode: code
+                      format: table
+                      range: true
+                      rawQuery: true
+                      rawSql: |-
+                        SELECT
+                          e."id" AS execution_id,
+                          w."name" AS workflow_name,
+                          e."mode",
+                          e."status",
+                          e."startedAt",
+                          EXTRACT(epoch FROM (NOW() - e."startedAt")) * 1000 AS wait_time
+                        FROM execution_entity e
+                        LEFT JOIN workflow_entity w ON w."id" = e."workflowId"
+                        WHERE e."finished" = false
+                          AND e."status" = 'new'
+                        ORDER BY e."startedAt" ASC
+                        LIMIT 20;
+                      sql:
+                        columns:
+                          - parameters: []
+                            type: function
+                        groupBy:
+                          - property:
+                              type: string
+                            type: groupBy
+                        limit: 50
+                    version: v0
+                  refId: A
+            queryOptions: {}
+            transformations: []
+        description: Current execution queue with pending workflows
+        id: 36
+        links: []
+        title: Current execution queue (pending)
+        transparent: true
+        vizConfig:
+          group: table
+          kind: VizConfig
+          spec:
+            fieldConfig:
+              defaults:
+                custom:
+                  align: left
+                  cellOptions:
+                    type: auto
+                  footer:
+                    reducers: []
+                  inspect: false
+                thresholds:
+                  mode: absolute
+                  steps:
+                    - color: green
+                      value: 0
+              overrides:
+                - matcher:
+                    id: byName
+                    options: wait_time
+                  properties:
+                    - id: unit
+                      value: dtdurations
+            options:
+              cellHeight: sm
+              showHeader: true
+              sortBy:
+                - desc: false
+                  displayName: startedAt
+          version: 12.3.0
+    panel-37:
+      kind: Panel
+      spec:
+        data:
+          kind: QueryGroup
+          spec:
+            queries:
+              - kind: PanelQuery
+                spec:
+                  hidden: false
+                  query:
+                    group: grafana-postgresql-datasource
+                    kind: DataQuery
+                    spec:
+                      editorMode: code
+                      format: table
+                      range: true
+                      rawQuery: true
+                      rawSql: |
+                        SELECT
+                            e."id" AS execution_id,
+                            w."name" AS workflow_name,
+                            e."mode",
+                            e."status",
+                            e."startedAt",
+                            e."stoppedAt",
+                            ROUND(
+                                EXTRACT(
+                                    epoch FROM 
+                                    (COALESCE(e."stoppedAt", NOW()) - e."startedAt")
+                                ), 2
+                            ) AS runtime_seconds,
+                            CASE
+                                WHEN e."stoppedAt" IS NULL THEN 'yes'
+                                ELSE 'no'
+                            END AS running
+                        FROM execution_entity e
+                        LEFT JOIN workflow_entity w ON w."id" = e."workflowId"
+                        ORDER BY runtime_seconds DESC
+                        LIMIT 20;
+                      sql:
+                        columns:
+                          - parameters: []
+                            type: function
+                        groupBy:
+                          - property:
+                              type: string
+                            type: groupBy
+                        limit: 50
+                    version: v0
+                  refId: A
+            queryOptions: {}
+            transformations: []
+        description: Long running executions that may be stuck
+        id: 37
+        links: []
+        title: Long running executions
+        transparent: true
+        vizConfig:
+          group: table
+          kind: VizConfig
+          spec:
+            fieldConfig:
+              defaults:
+                custom:
+                  align: left
+                  cellOptions:
+                    type: auto
+                  footer:
+                    reducers: []
+                  inspect: false
+                thresholds:
+                  mode: absolute
+                  steps:
+                    - color: green
+                      value: 0
+              overrides:
+                - matcher:
+                    id: byName
+                    options: runtime
+                  properties:
+                    - id: unit
+                      value: dtdurations
+                    - id: custom.cellOptions
+                      value:
+                        mode: gradient
+                        type: color-background
+                    - id: color
+                      value:
+                        mode: continuous-GrYlRd
+                        seriesBy: last
+            options:
+              cellHeight: sm
+              showHeader: true
+              sortBy:
+                - desc: true
+                  displayName: runtime_minutes
+          version: 12.3.0
+    panel-38:
+      kind: Panel
+      spec:
+        data:
+          kind: QueryGroup
+          spec:
+            queries:
+              - kind: PanelQuery
+                spec:
+                  hidden: false
+                  query:
+                    group: grafana-postgresql-datasource
+                    kind: DataQuery
+                    spec:
+                      format: table
+                      range: true
+                      rawSql: |-
+                        SELECT
+                          e."id" AS execution_id,
+                          w."name" AS workflow_name,
+                          e."status",
+                          e."mode",
+                          e."startedAt",
+                          e."stoppedAt",
+                          CASE 
+                            WHEN e."stoppedAt" IS NOT NULL THEN EXTRACT(epoch FROM (e."stoppedAt" - e."startedAt"))
+                            ELSE NULL
+                          END AS duration_seconds
+                        FROM execution_entity e
+                        LEFT JOIN workflow_entity w ON w."id" = e."workflowId"
+                        WHERE e."status" IN ('error', 'crashed')
+                          AND $__timeFilter(e."startedAt")
+                        ORDER BY e."startedAt" DESC
+                        LIMIT 50;
+                    version: v0
+                  refId: A
+            queryOptions: {}
+            transformations: []
+        description: Recent execution errors with details
+        id: 38
+        links: []
+        title: Recent execution errors
+        transparent: true
+        vizConfig:
+          group: table
+          kind: VizConfig
+          spec:
+            fieldConfig:
+              defaults:
+                custom:
+                  align: left
+                  cellOptions:
+                    type: auto
+                  footer:
+                    reducers: []
+                  inspect: false
+                thresholds:
+                  mode: absolute
+                  steps:
+                    - color: green
+                      value: 0
+              overrides:
+                - matcher:
+                    id: byName
+                    options: status
+                  properties:
+                    - id: custom.cellOptions
+                      value:
+                        type: color-text
+                    - id: mappings
+                      value:
+                        - options:
+                            crashed:
+                              color: orange
+                              index: 1
+                            error:
+                              color: red
+                              index: 0
+                          type: value
+            options:
+              cellHeight: sm
+              showHeader: true
+              sortBy:
+                - desc: true
+                  displayName: startedAt
+          version: 12.3.0
+  layout:
+    kind: GridLayout
+    spec:
+      items: []
+  links: []
+  liveNow: false
+  preload: false
+  tags:
+    - n8n
+    - postgresql
+  timeSettings:
+    autoRefresh: ''
+    autoRefreshIntervals:
+      - 5s
+      - 10s
+      - 30s
+      - 1m
+      - 5m
+      - 15m
+      - 30m
+      - 1h
+      - 2h
+      - 1d
+    fiscalYearStartMonth: 0
+    from: now-7d
+    hideTimepicker: false
+    timezone: browser
+    to: now
+  title: n8n Workflow & Execution Analytics
+  variables: []
+status: {}
