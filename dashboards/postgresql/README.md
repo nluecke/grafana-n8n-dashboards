@@ -1,123 +1,102 @@
 # n8n Workflow & Execution Analytics Dashboard
-A comprehensive Grafana dashboard for monitoring and analyzing n8n workflow automation platform performance, execution metrics, and workflow quality.
+
+A Grafana dashboard for analyzing n8n workflow performance, execution patterns, queue behavior, and workflow quality — powered by the n8n PostgreSQL database.
 
 ## Overview
-This dashboard provides deep insights into your n8n workflows and executions, helping you track performance, identify bottlenecks, monitor success rates, and optimize your automation workflows. It connects directly to your n8n PostgreSQL database to provide real-time analytics.
+
+This dashboard provides detailed analytics for understanding how workflows run over time, identifying failures, spotting bottlenecks, and improving workflow design.  
+It complements the **n8n System Health Overview** dashboard by focusing on workflow-level and business-level insights.
 
 ![Dashboard Preview 1](./n8n-workflow-execution-analytics-1.png)
 ![Dashboard Preview 2](./n8n-workflow-execution-analytics-2.png)
 
-**Perfect companion to the [n8n System Health Overview Dashboard](https://github.com/nluecke/grafana-n8n-dashboards/tree/main/dashboards/prometheus)** - while System Health monitors Node.js runtime metrics, this dashboard focuses on workflow execution analytics and business metrics.
-
 ## Features
-### Executive Summary
-- **Total Workflows**: Complete workflow inventory
-- **Active Workflows**: Currently enabled workflows
-- **Total Executions**: Execution count in selected time range
-- **Success Rate**: Percentage of successful executions with health indicators
-- **Failed Executions**: Error and crash tracking
-- **Currently Running**: Live execution monitoring
 
-### Execution Performance Trends
-- **Executions Over Time by Status**: Visual timeline of success/error/crashed executions
-- **Execution Duration Percentiles**: P50, P95, P99 latency tracking over time
-- **P95, Max, Avg & Median Duration (24h)**: Performance snapshot metrics
+### Executive Summary
+- Total workflows  
+- Active workflows  
+- Total executions  
+- Success rate (with health indicators)  
+- Failed executions  
+- Currently running executions  
+
+### Execution Performance
+- Executions over time by status  
+- Duration percentiles (P50, P95, P99)  
+- 24h duration summary (Avg, Median, Max, P95)  
 
 ### Workflow Quality Insights
-- **Most Executed Workflows**: Top workflows by execution count with success rates
-- **Daily Success Rate Trend**: 7-day success rate visualization
-- **Workflows with Most Failures**: Identify problematic workflows
-- **Slowest Workflows**: Performance bottleneck identification by average duration
+- Most executed workflows  
+- Daily success rate trend  
+- Workflows with most failures  
+- Slowest workflows  
 
-### Resource & Queue Management
-- **Execution Queue Depth**: Monitor queued and running executions over time
-- **Current Execution Queue**: Real-time view of pending workflows
-- **Long Running Executions**: Identify potentially stuck workflows
-- **Recently Updated Workflows**: Track workflow changes
-- **Workflows by Tags**: Category-based workflow organization
-- **Recent Execution Errors**: Detailed error log with timing
+### Queue & Runtime Monitoring
+- Execution queue depth  
+- Current pending/active executions  
+- Long-running executions  
+- Recently updated workflows  
+- Workflows by tags  
+- Recent execution errors  
 
 ## Requirements
-### Software Requirements
-- **Grafana**: v9.0+ (tested with v12.3+)
-- **n8n**: Any version with PostgreSQL database backend
-- **PostgreSQL**: v12+ (n8n database)
+
+### Software
+- **Grafana** 9.0+ (tested with 12.3+)  
+- **n8n** with PostgreSQL backend  
+- **PostgreSQL** 12+  
 
 ### Grafana Plugins
-- PostgreSQL datasource (built-in)
+- Built-in PostgreSQL datasource
 
-### Database Access
-- Read-only access to n8n PostgreSQL database
-- Required tables:  
-    - `workflow_entity`
-    - `execution_entity`
-    - `tag_entity`
-    - `workflows_tags` (join table)
+### Database Tables Required
+- `workflow_entity`  
+- `execution_entity`  
+- `tag_entity`  
+- `workflows_tags`
+
+A read-only database user is recommended.
 
 ## Installation
-### 1. Configure PostgreSQL Datasource
 
-In Grafana, add a new PostgreSQL datasource:
-1. Navigate to **Configuration** → **Data Sources** → **Add data source**
-2. Select **PostgreSQL**
-3. Configure connection settings:
+### 1. Configure PostgreSQL Datasource
+1. Go to **Configuration → Data Sources → Add data source**  
+2. Select **PostgreSQL**  
+3. Set:
 ```
-   Host: your-n8n-database-host:5432  
-   Database: n8n  
-   User: grafana_readonly (or your read-only user)  
-   Password: your-password  
-   SSL Mode: require (recommended for production)  
-   
+Host: your-n8n-db:5432
+Database: n8n
+User: grafana_readonly
+Password: your-password
+SSL Mode: require
 ```
-4. Test the connection
-5. Save the datasource and note the **UID** (e.g., `bf4plhy8zn8xsd`)
+4. Save and note the datasource **UID**.
 
 ### 2. Import Dashboard
 
-#### Option A: Import from JSON
-1. Download or copy content from `n8n-workflow-execution-analytics.json` from this repository
-2. In Grafana, navigate to **Dashboards** → **Import**
-3. Upload the JSON file or paste the JSON content
-4. Select your PostgreSQL datasource
-5. Click **Import**
+#### Option A: JSON Import
+1. Download `n8n-workflow-execution-analytics.json`  
+2. Go to **Dashboards → Import**  
+3. Upload or paste JSON  
+4. Select your PostgreSQL datasource  
 
-#### Option B: Import from Grafana.com
-1. In Grafana, navigate to **Dashboards** → **Import**
-2. Enter dashboard ID: `[24475]` 
-3. Select your PostgreSQL datasource
-4. Click **Import**
+#### Option B: Grafana.com Import
+1. Go to **Dashboards → Import**  
+2. Use ID: **24475**  
+3. Select your PostgreSQL datasource  
 
-### 3. Configure Time Macros
-
-The dashboard uses Grafana's time macros (`$__timeFilter`, `$__timeGroupAlias`) which automatically work with your selected time range. No additional configuration needed.
-
-## Dashboard Sections Explained
+## Dashboard Sections
 
 ### Executive Summary
-Provides instant visibility into your n8n instance health with key performance indicators. Color-coded thresholds help quickly identify issues:
-
-- 🔵 Blue: Informational metrics
-- 🟢 Green: Healthy state
-- 🟡 Yellow: Warning threshold
-- 🔴 Red: Critical threshold
+Fast insight into workflow stability and performance, with color-coded thresholds indicating health.
 
 ### Performance Metrics
+Identify trends, spikes, degradations, and latency distributions over time.
 
-Track execution performance over time to identify trends, spikes, or degradation:
-- **Duration percentiles** help understand latency distribution
-- **P95 tracking** catches outliers that affect user experience
-- **Time-series visualization** reveals patterns and anomalies
-
-### Workflow Analysis Tables
-
-Sortable tables provide detailed workflow analytics:
-- Click column headers to sort by different metrics
-- Use for identifying optimization opportunities
-- Export data for further analysis
+### Workflow Analysis
+Sortable and exportable tables for identifying problematic or high-value workflows.
 
 ### Queue Management
+Monitor queue buildup, long-running executions, and potential resource constraints.
 
-Monitor execution queuing and resource utilization:
-- Identify backlog buildup
-- Detect long-running or stuck executions
-- Optimize worker capacity planning
+
