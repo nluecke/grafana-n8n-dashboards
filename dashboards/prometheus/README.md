@@ -49,11 +49,19 @@ scrape_configs:
 ```
 
 ### 3. Import Dashboard
-1. Download `n8n-system-health-overview.json` or Copy the dashboard JSON or use dashboard id `24474`
-2. In Grafana, go to **Dashboards** → **Import**
-3. Paste the JSON, upload the file or insert dashboard id
-4. Select your Prometheus datasource
+
+#### Option A: Import from JSON
+1. Download or copy content from `n8n-workflow-execution-analytics.json` from this repository
+2. In Grafana, navigate to **Dashboards** → **Import**
+3. Upload the JSON file or paste the JSON content
+4. Select your PostgreSQL datasource
 5. Click **Import**
+
+#### Option B: Import from Grafana.com
+1. In Grafana, navigate to **Dashboards** → **Import**
+2. Enter dashboard ID: `[24474]` 
+3. Select your PostgreSQL datasource
+4. Click **Import**
 
 ## Metrics Used
 This dashboard relies on these n8n Prometheus metrics:
