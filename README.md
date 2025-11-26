@@ -38,8 +38,8 @@ n8n-grafana-dashboards/
 Both dashboards can be imported via:
 - JSON files (included in this repo)
 - Grafana.com  
-  - Prometheus dashboard ID: **24474**  
-  - PostgreSQL dashboard ID: **24475**
+  - Prometheus dashboard ID: [**24474**](https://grafana.com/grafana/dashboards/24474)   
+  - Prometheus dashboard ID: [**24475**](https://grafana.com/grafana/dashboards/24475) 
 
 ## License
 This project is licensed under the MIT License.
