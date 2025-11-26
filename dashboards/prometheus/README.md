@@ -49,7 +49,7 @@ scrape_configs:
 ```
 
 ### 3. Import Dashboard
-1. Copy the dashboard JSON from `n8n-system-health-overview.json` or use dashboard id `24474`
+1. Download `n8n-system-health-overview.json` or Copy the dashboard JSON or use dashboard id `24474`
 2. In Grafana, go to **Dashboards** → **Import**
 3. Paste the JSON, upload the file or insert dashboard id
 4. Select your Prometheus datasource
