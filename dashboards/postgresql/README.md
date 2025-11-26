@@ -4,6 +4,9 @@ A comprehensive Grafana dashboard for monitoring and analyzing n8n workflow auto
 ## Overview
 This dashboard provides deep insights into your n8n workflows and executions, helping you track performance, identify bottlenecks, monitor success rates, and optimize your automation workflows. It connects directly to your n8n PostgreSQL database to provide real-time analytics.
 
+![Dashboard Preview 1](./n8n-workflow-execution-analytics-1.png)
+![Dashboard Preview 2](./n8n-workflow-execution-analytics-2.png)
+
 **Perfect companion to the [n8n System Health Overview Dashboard](https://github.com/nluecke/grafana-n8n-dashboards/tree/main/dashboards/prometheus)** - while System Health monitors Node.js runtime metrics, this dashboard focuses on workflow execution analytics and business metrics.
 
 ## Features
