@@ -5,6 +5,8 @@ Monitor your n8n workflow automation platform with this comprehensive Node.js ru
 This dashboard provides real-time monitoring of your n8n instance's health and performance metrics. It tracks CPU usage, memory consumption, heap allocation, garbage collection, event loop performance, and cluster status using n8n's native Prometheus metrics.
 Perfect for production environments running self-hosted n8n instances.
 
+https://github.com/nluecke/grafana-n8n-dashboards/blob/main/dashboards/prometheus/n8n-system-health-overview.png
+
 ## Features
 ### Process & Instance Information
 - **n8n Version** - Current n8n version running
