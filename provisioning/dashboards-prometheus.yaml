@@ -1,0 +1,1155 @@
+apiVersion: dashboard.grafana.app/v2beta1
+kind: Dashboard
+metadata:
+  name: adv6qmb
+  generation: 14
+  creationTimestamp: '2025-11-25T16:36:38Z'
+  labels: {}
+  annotations: {}
+spec:
+  annotations:
+    - kind: AnnotationQuery
+      spec:
+        builtIn: true
+        enable: true
+        hide: true
+        iconColor: rgba(0, 211, 255, 1)
+        name: Annotations & Alerts
+        query:
+          group: grafana
+          kind: DataQuery
+          spec: {}
+          version: v0
+  cursorSync: 'Off'
+  description: >-
+    Monitor your n8n workflow automation platform with this comprehensive
+    Node.js runtime and application health dashboard.  
+
+
+    Tracks CPU, memory, heap usage, garbage collection, event loop performance,
+    and cluster status using n8n's native Prometheus metrics.  
+
+
+    Perfect for production environments running n8n self-hosted instances.  
+  editable: true
+  elements:
+    panel-1:
+      kind: Panel
+      spec:
+        data:
+          kind: QueryGroup
+          spec:
+            queries:
+              - kind: PanelQuery
+                spec:
+                  hidden: false
+                  query:
+                    group: prometheus
+                    kind: DataQuery
+                    spec:
+                      editorMode: code
+                      exemplar: false
+                      expr: n8n_version_info
+                      format: table
+                      instant: true
+                      legendFormat: __auto
+                      range: false
+                    version: v0
+                  refId: A
+            queryOptions: {}
+            transformations:
+              - kind: organize
+                spec:
+                  id: organize
+                  options:
+                    excludeByName:
+                      Time: true
+                      Value: true
+                      __name__: true
+                      instance: true
+                      job: true
+                      major: true
+                      minor: true
+                      patch: true
+                    includeByName: {}
+                    indexByName: {}
+                    orderByMode: manual
+                    renameByName: {}
+        description: Current n8n version
+        id: 1
+        links: []
+        title: n8n version
+        transparent: true
+        vizConfig:
+          group: stat
+          kind: VizConfig
+          spec:
+            fieldConfig:
+              defaults:
+                thresholds:
+                  mode: absolute
+                  steps:
+                    - color: blue
+                      value: 0
+                    - color: red
+                      value: 80
+                unit: short
+              overrides: []
+            options:
+              colorMode: background
+              graphMode: none
+              justifyMode: auto
+              orientation: auto
+              percentChangeColorMode: standard
+              reduceOptions:
+                calcs:
+                  - lastNotNull
+                fields: /.*/
+                values: true
+              showPercentChange: false
+              textMode: auto
+              wideLayout: true
+          version: 12.3.0
+    panel-2:
+      kind: Panel
+      spec:
+        data:
+          kind: QueryGroup
+          spec:
+            queries:
+              - kind: PanelQuery
+                spec:
+                  hidden: false
+                  query:
+                    group: prometheus
+                    kind: DataQuery
+                    spec:
+                      editorMode: code
+                      exemplar: false
+                      expr: n8n_nodejs_version_info
+                      format: table
+                      instant: true
+                      legendFormat: __auto
+                      range: false
+                    version: v0
+                  refId: A
+            queryOptions: {}
+            transformations:
+              - kind: organize
+                spec:
+                  id: organize
+                  options:
+                    excludeByName:
+                      Time: true
+                      Value: true
+                      __name__: true
+                      instance: true
+                      job: true
+                      major: true
+                      minor: true
+                      patch: true
+                    includeByName: {}
+                    indexByName: {}
+        description: Node.js runtime version
+        id: 2
+        links: []
+        title: Node.js version
+        transparent: true
+        vizConfig:
+          group: stat
+          kind: VizConfig
+          spec:
+            fieldConfig:
+              defaults:
+                thresholds:
+                  mode: absolute
+                  steps:
+                    - color: blue
+                      value: 0
+                    - color: red
+                      value: 80
+                unit: short
+              overrides: []
+            options:
+              colorMode: background
+              graphMode: none
+              justifyMode: auto
+              orientation: auto
+              percentChangeColorMode: standard
+              reduceOptions:
+                calcs:
+                  - lastNotNull
+                fields: /.*/
+                values: true
+              showPercentChange: false
+              textMode: auto
+              wideLayout: true
+          version: 12.3.0
+    panel-3:
+      kind: Panel
+      spec:
+        data:
+          kind: QueryGroup
+          spec:
+            queries:
+              - kind: PanelQuery
+                spec:
+                  hidden: false
+                  query:
+                    group: prometheus
+                    kind: DataQuery
+                    spec:
+                      editorMode: code
+                      expr: time() - n8n_process_start_time_seconds
+                      instant: false
+                      legendFormat: __auto
+                      range: true
+                    version: v0
+                  refId: A
+            queryOptions: {}
+            transformations:
+              - kind: organize
+                spec:
+                  id: organize
+                  options:
+                    excludeByName:
+                      Time: true
+                      Value: false
+                      __name__: true
+                      instance: true
+                      job: true
+                      major: true
+                      minor: true
+                      patch: true
+                    includeByName: {}
+                    indexByName: {}
+                    orderByMode: manual
+                    renameByName: {}
+        description: Shows uptime of the n8n instance
+        id: 3
+        links: []
+        title: Instance uptime
+        transparent: true
+        vizConfig:
+          group: stat
+          kind: VizConfig
+          spec:
+            fieldConfig:
+              defaults:
+                color:
+                  mode: thresholds
+                thresholds:
+                  mode: absolute
+                  steps:
+                    - color: red
+                      value: 0
+                    - color: yellow
+                      value: 300
+                    - color: green
+                      value: 3600
+                unit: s
+              overrides: []
+            options:
+              colorMode: background
+              graphMode: none
+              justifyMode: auto
+              orientation: auto
+              percentChangeColorMode: standard
+              reduceOptions:
+                calcs:
+                  - lastNotNull
+                fields: /.*/
+                values: false
+              showPercentChange: false
+              textMode: auto
+              wideLayout: true
+          version: 12.3.0
+    panel-4:
+      kind: Panel
+      spec:
+        data:
+          kind: QueryGroup
+          spec:
+            queries:
+              - kind: PanelQuery
+                spec:
+                  hidden: false
+                  query:
+                    group: prometheus
+                    kind: DataQuery
+                    spec:
+                      editorMode: code
+                      expr: n8n_instance_role_leader
+                      instant: false
+                      legendFormat: __auto
+                      range: true
+                    version: v0
+                  refId: A
+            queryOptions: {}
+            transformations:
+              - kind: organize
+                spec:
+                  id: organize
+                  options:
+                    excludeByName:
+                      Time: true
+                      __name__: true
+                      instance: true
+                      job: true
+                    includeByName: {}
+                    indexByName: {}
+        description: Instance role in cluster - 1 = Leader, 0 = Follower
+        id: 4
+        links: []
+        title: Leader status
+        transparent: true
+        vizConfig:
+          group: stat
+          kind: VizConfig
+          spec:
+            fieldConfig:
+              defaults:
+                mappings:
+                  - options:
+                      '0':
+                        color: semi-dark-blue
+                        index: 1
+                        text: Follower
+                      '1':
+                        color: green
+                        index: 0
+                        text: Leader
+                    type: value
+                thresholds:
+                  mode: absolute
+                  steps:
+                    - color: blue
+                      value: 0
+                    - color: red
+                      value: 80
+              overrides: []
+            options:
+              colorMode: background
+              graphMode: none
+              justifyMode: auto
+              orientation: auto
+              percentChangeColorMode: standard
+              reduceOptions:
+                calcs:
+                  - lastNotNull
+                fields: /.*/
+                values: false
+              showPercentChange: false
+              textMode: auto
+              wideLayout: true
+          version: 12.3.0
+    panel-42:
+      kind: Panel
+      spec:
+        data:
+          kind: QueryGroup
+          spec:
+            queries:
+              - kind: PanelQuery
+                spec:
+                  hidden: false
+                  query:
+                    group: prometheus
+                    kind: DataQuery
+                    spec:
+                      editorMode: code
+                      expr: >-
+                        rate(n8n_process_cpu_seconds_total[$__rate_interval]) *
+                        100
+                      instant: false
+                      legendFormat: Total CPU
+                      range: true
+                    version: v0
+                  refId: A
+              - kind: PanelQuery
+                spec:
+                  hidden: false
+                  query:
+                    group: prometheus
+                    kind: DataQuery
+                    spec:
+                      editorMode: code
+                      expr: >-
+                        rate(n8n_process_cpu_user_seconds_total[$__rate_interval])
+                        * 100
+                      instant: false
+                      legendFormat: User CPU
+                      range: true
+                    version: v0
+                  refId: B
+              - kind: PanelQuery
+                spec:
+                  hidden: false
+                  query:
+                    group: prometheus
+                    kind: DataQuery
+                    spec:
+                      editorMode: code
+                      expr: >-
+                        rate(n8n_process_cpu_system_seconds_total[$__rate_interval])
+                        * 100
+                      instant: false
+                      legendFormat: System CPU
+                      range: true
+                    version: v0
+                  refId: C
+            queryOptions: {}
+            transformations: []
+        description: Shows CPU usage breakdown
+        id: 42
+        links: []
+        title: CPU usage
+        vizConfig:
+          group: timeseries
+          kind: VizConfig
+          spec:
+            fieldConfig:
+              defaults:
+                color:
+                  mode: palette-classic
+                custom:
+                  axisBorderShow: false
+                  axisCenteredZero: false
+                  axisColorMode: text
+                  axisLabel: ''
+                  axisPlacement: auto
+                  barAlignment: 0
+                  barWidthFactor: 0.6
+                  drawStyle: line
+                  fillOpacity: 10
+                  gradientMode: none
+                  hideFrom:
+                    legend: false
+                    tooltip: false
+                    viz: false
+                  insertNulls: false
+                  lineInterpolation: linear
+                  lineWidth: 2
+                  pointSize: 5
+                  scaleDistribution:
+                    type: linear
+                  showPoints: auto
+                  showValues: false
+                  spanNulls: false
+                  stacking:
+                    group: A
+                    mode: none
+                  thresholdsStyle:
+                    mode: line
+                thresholds:
+                  mode: absolute
+                  steps:
+                    - color: green
+                      value: 0
+                    - color: yellow
+                      value: 70
+                    - color: orange
+                      value: 85
+                    - color: red
+                      value: 95
+                unit: percent
+              overrides: []
+            options:
+              legend:
+                calcs:
+                  - lastNotNull
+                  - mean
+                  - max
+                displayMode: table
+                placement: bottom
+                showLegend: true
+              tooltip:
+                hideZeros: false
+                mode: multi
+                sort: desc
+          version: 12.3.0
+    panel-43:
+      kind: Panel
+      spec:
+        data:
+          kind: QueryGroup
+          spec:
+            queries:
+              - kind: PanelQuery
+                spec:
+                  hidden: false
+                  query:
+                    group: prometheus
+                    kind: DataQuery
+                    spec:
+                      editorMode: code
+                      expr: n8n_nodejs_eventloop_lag_p99_seconds
+                      instant: false
+                      legendFormat: p99
+                      range: true
+                    version: v0
+                  refId: A
+              - kind: PanelQuery
+                spec:
+                  hidden: false
+                  query:
+                    group: prometheus
+                    kind: DataQuery
+                    spec:
+                      editorMode: code
+                      expr: n8n_nodejs_eventloop_lag_p90_seconds
+                      instant: false
+                      legendFormat: p90
+                      range: true
+                    version: v0
+                  refId: B
+              - kind: PanelQuery
+                spec:
+                  hidden: false
+                  query:
+                    group: prometheus
+                    kind: DataQuery
+                    spec:
+                      editorMode: code
+                      expr: n8n_nodejs_eventloop_lag_p50_seconds
+                      instant: false
+                      legendFormat: p50
+                      range: true
+                    version: v0
+                  refId: C
+            queryOptions: {}
+            transformations: []
+        description: Event loop lag
+        id: 43
+        links: []
+        title: Event loop latency
+        vizConfig:
+          group: timeseries
+          kind: VizConfig
+          spec:
+            fieldConfig:
+              defaults:
+                color:
+                  mode: palette-classic
+                custom:
+                  axisBorderShow: false
+                  axisCenteredZero: false
+                  axisColorMode: text
+                  axisLabel: ''
+                  axisPlacement: auto
+                  barAlignment: 0
+                  barWidthFactor: 0.6
+                  drawStyle: line
+                  fillOpacity: 10
+                  gradientMode: none
+                  hideFrom:
+                    legend: false
+                    tooltip: false
+                    viz: false
+                  insertNulls: false
+                  lineInterpolation: linear
+                  lineWidth: 2
+                  pointSize: 5
+                  scaleDistribution:
+                    type: linear
+                  showPoints: auto
+                  showValues: false
+                  spanNulls: false
+                  stacking:
+                    group: A
+                    mode: none
+                  thresholdsStyle:
+                    mode: line
+                thresholds:
+                  mode: absolute
+                  steps:
+                    - color: green
+                      value: 0
+                    - color: yellow
+                      value: 0.05
+                    - color: orange
+                      value: 0.1
+                    - color: red
+                      value: 0.15
+                unit: s
+              overrides: []
+            options:
+              legend:
+                calcs:
+                  - lastNotNull
+                  - mean
+                  - max
+                displayMode: table
+                placement: bottom
+                showLegend: true
+              tooltip:
+                hideZeros: false
+                mode: multi
+                sort: desc
+          version: 12.3.0
+    panel-44:
+      kind: Panel
+      spec:
+        data:
+          kind: QueryGroup
+          spec:
+            queries:
+              - kind: PanelQuery
+                spec:
+                  hidden: false
+                  query:
+                    group: prometheus
+                    kind: DataQuery
+                    spec:
+                      editorMode: code
+                      expr: n8n_process_resident_memory_bytes
+                      instant: false
+                      legendFormat: RSS
+                      range: true
+                    version: v0
+                  refId: A
+            queryOptions: {}
+            transformations: []
+        description: Resident memory usage
+        id: 44
+        links: []
+        title: Memory (RSS)
+        vizConfig:
+          group: timeseries
+          kind: VizConfig
+          spec:
+            fieldConfig:
+              defaults:
+                color:
+                  mode: palette-classic
+                custom:
+                  axisBorderShow: false
+                  axisCenteredZero: false
+                  axisColorMode: text
+                  axisLabel: ''
+                  axisPlacement: auto
+                  barAlignment: 0
+                  barWidthFactor: 0.6
+                  drawStyle: line
+                  fillOpacity: 10
+                  gradientMode: none
+                  hideFrom:
+                    legend: false
+                    tooltip: false
+                    viz: false
+                  insertNulls: false
+                  lineInterpolation: linear
+                  lineWidth: 2
+                  pointSize: 5
+                  scaleDistribution:
+                    type: linear
+                  showPoints: auto
+                  showValues: false
+                  spanNulls: false
+                  stacking:
+                    group: A
+                    mode: none
+                  thresholdsStyle:
+                    mode: line
+                thresholds:
+                  mode: absolute
+                  steps:
+                    - color: green
+                      value: 0
+                    - color: yellow
+                      value: 1200000000
+                    - color: red
+                      value: 1800000000
+                unit: bytes
+              overrides: []
+            options:
+              legend:
+                calcs:
+                  - lastNotNull
+                  - max
+                displayMode: table
+                placement: bottom
+                showLegend: true
+              tooltip:
+                hideZeros: false
+                mode: single
+                sort: none
+          version: 12.3.0
+    panel-45:
+      kind: Panel
+      spec:
+        data:
+          kind: QueryGroup
+          spec:
+            queries:
+              - kind: PanelQuery
+                spec:
+                  hidden: false
+                  query:
+                    group: prometheus
+                    kind: DataQuery
+                    spec:
+                      editorMode: code
+                      expr: n8n_nodejs_heap_size_used_bytes
+                      instant: false
+                      legendFormat: Used
+                      range: true
+                    version: v0
+                  refId: A
+              - kind: PanelQuery
+                spec:
+                  hidden: false
+                  query:
+                    group: prometheus
+                    kind: DataQuery
+                    spec:
+                      editorMode: code
+                      expr: n8n_nodejs_heap_size_total_bytes
+                      instant: false
+                      legendFormat: Total (dynamic)
+                      range: true
+                    version: v0
+                  refId: B
+            queryOptions: {}
+            transformations: []
+        description: >-
+          JavaScript heap memory - Node.js automatically manages heap size. High
+          percentage (80-95%) is NORMAL and expected. Watch for heap total
+          growing over time, not the percentage.
+        id: 45
+        links: []
+        title: Heap memory (dynamic allocation)
+        vizConfig:
+          group: timeseries
+          kind: VizConfig
+          spec:
+            fieldConfig:
+              defaults:
+                color:
+                  mode: palette-classic
+                custom:
+                  axisBorderShow: false
+                  axisCenteredZero: false
+                  axisColorMode: text
+                  axisLabel: ''
+                  axisPlacement: auto
+                  barAlignment: 0
+                  barWidthFactor: 0.6
+                  drawStyle: line
+                  fillOpacity: 10
+                  gradientMode: none
+                  hideFrom:
+                    legend: false
+                    tooltip: false
+                    viz: false
+                  insertNulls: false
+                  lineInterpolation: linear
+                  lineWidth: 2
+                  pointSize: 5
+                  scaleDistribution:
+                    type: linear
+                  showPoints: auto
+                  showValues: false
+                  spanNulls: false
+                  stacking:
+                    group: A
+                    mode: none
+                  thresholdsStyle:
+                    mode: line
+                thresholds:
+                  mode: percentage
+                  steps:
+                    - color: green
+                      value: 0
+                    - color: yellow
+                      value: 70
+                    - color: orange
+                      value: 85
+                    - color: red
+                      value: 95
+                unit: bytes
+              overrides: []
+            options:
+              legend:
+                calcs:
+                  - lastNotNull
+                  - max
+                displayMode: table
+                placement: bottom
+                showLegend: true
+              tooltip:
+                hideZeros: false
+                mode: multi
+                sort: none
+          version: 12.3.0
+    panel-46:
+      kind: Panel
+      spec:
+        data:
+          kind: QueryGroup
+          spec:
+            queries:
+              - kind: PanelQuery
+                spec:
+                  hidden: false
+                  query:
+                    group: prometheus
+                    kind: DataQuery
+                    spec:
+                      editorMode: code
+                      expr: >-
+                        (n8n_nodejs_heap_size_used_bytes /
+                        n8n_nodejs_heap_size_total_bytes) * 100
+                      instant: false
+                      legendFormat: ''
+                      range: true
+                    version: v0
+                  refId: A
+            queryOptions: {}
+            transformations: []
+        description: >-
+          Heap usage percentage shows how full the CURRENT heap allocation is.
+          80-95% is NORMAL for Node.js! This is NOT an indicator of memory
+          pressure. Only worry if heap total keeps growing OR if you see
+          excessive GC activity.
+        id: 46
+        links: []
+        title: 'Heap % '
+        vizConfig:
+          group: stat
+          kind: VizConfig
+          spec:
+            fieldConfig:
+              defaults:
+                thresholds:
+                  mode: absolute
+                  steps:
+                    - color: green
+                      value: 0
+                    - color: yellow
+                      value: 70
+                    - color: orange
+                      value: 85
+                    - color: red
+                      value: 95
+                unit: short
+              overrides: []
+            options:
+              colorMode: value
+              graphMode: area
+              justifyMode: auto
+              orientation: auto
+              percentChangeColorMode: standard
+              reduceOptions:
+                calcs:
+                  - lastNotNull
+                fields: ''
+                values: false
+              showPercentChange: false
+              textMode: auto
+              wideLayout: true
+          version: 12.3.0
+    panel-47:
+      kind: Panel
+      spec:
+        data:
+          kind: QueryGroup
+          spec:
+            queries:
+              - kind: PanelQuery
+                spec:
+                  hidden: false
+                  query:
+                    group: prometheus
+                    kind: DataQuery
+                    spec:
+                      editorMode: code
+                      expr: >-
+                        rate(n8n_nodejs_gc_duration_seconds_sum{kind="minor"}[$__rate_interval])
+                      instant: false
+                      legendFormat: Minor GC
+                      range: true
+                    version: v0
+                  refId: A
+              - kind: PanelQuery
+                spec:
+                  hidden: false
+                  query:
+                    group: prometheus
+                    kind: DataQuery
+                    spec:
+                      editorMode: code
+                      expr: >-
+                        rate(n8n_nodejs_gc_duration_seconds_sum{kind="major"}[$__rate_interval])
+                      instant: false
+                      legendFormat: Major GC
+                      range: true
+                    version: v0
+                  refId: B
+            queryOptions: {}
+            transformations: []
+        description: Gargabe Collector duration
+        id: 47
+        links: []
+        title: GC duration
+        vizConfig:
+          group: timeseries
+          kind: VizConfig
+          spec:
+            fieldConfig:
+              defaults:
+                color:
+                  mode: palette-classic
+                custom:
+                  axisBorderShow: false
+                  axisCenteredZero: false
+                  axisColorMode: text
+                  axisLabel: ''
+                  axisPlacement: auto
+                  barAlignment: 0
+                  barWidthFactor: 0.6
+                  drawStyle: line
+                  fillOpacity: 10
+                  gradientMode: none
+                  hideFrom:
+                    legend: false
+                    tooltip: false
+                    viz: false
+                  insertNulls: false
+                  lineInterpolation: linear
+                  lineWidth: 2
+                  pointSize: 5
+                  scaleDistribution:
+                    type: linear
+                  showPoints: auto
+                  showValues: false
+                  spanNulls: false
+                  stacking:
+                    group: A
+                    mode: none
+                  thresholdsStyle:
+                    mode: 'off'
+                thresholds:
+                  mode: absolute
+                  steps:
+                    - color: green
+                      value: 0
+                unit: s
+              overrides: []
+            options:
+              legend:
+                calcs:
+                  - lastNotNull
+                  - max
+                displayMode: table
+                placement: bottom
+                showLegend: true
+              tooltip:
+                hideZeros: false
+                mode: single
+                sort: none
+          version: 12.3.0
+    panel-48:
+      kind: Panel
+      spec:
+        data:
+          kind: QueryGroup
+          spec:
+            queries:
+              - kind: PanelQuery
+                spec:
+                  hidden: false
+                  query:
+                    group: prometheus
+                    kind: DataQuery
+                    spec:
+                      editorMode: code
+                      expr: n8n_process_open_fds
+                      instant: false
+                      legendFormat: Open FDs
+                      range: true
+                    version: v0
+                  refId: A
+              - kind: PanelQuery
+                spec:
+                  hidden: false
+                  query:
+                    group: prometheus
+                    kind: DataQuery
+                    spec:
+                      editorMode: code
+                      expr: n8n_process_max_fds
+                      instant: false
+                      legendFormat: Max FDs
+                      range: true
+                    version: v0
+                  refId: B
+            queryOptions: {}
+            transformations: []
+        description: File descriptors
+        id: 48
+        links: []
+        title: File descriptors
+        vizConfig:
+          group: timeseries
+          kind: VizConfig
+          spec:
+            fieldConfig:
+              defaults:
+                color:
+                  mode: palette-classic
+                custom:
+                  axisBorderShow: false
+                  axisCenteredZero: false
+                  axisColorMode: text
+                  axisLabel: ''
+                  axisPlacement: auto
+                  barAlignment: 0
+                  barWidthFactor: 0.6
+                  drawStyle: line
+                  fillOpacity: 10
+                  gradientMode: none
+                  hideFrom:
+                    legend: false
+                    tooltip: false
+                    viz: false
+                  insertNulls: false
+                  lineInterpolation: linear
+                  lineWidth: 2
+                  pointSize: 5
+                  scaleDistribution:
+                    type: linear
+                  showPoints: auto
+                  showValues: false
+                  spanNulls: false
+                  stacking:
+                    group: A
+                    mode: none
+                  thresholdsStyle:
+                    mode: 'off'
+                thresholds:
+                  mode: absolute
+                  steps:
+                    - color: green
+                      value: 0
+                unit: short
+              overrides: []
+            options:
+              legend:
+                calcs:
+                  - lastNotNull
+                  - max
+                displayMode: table
+                placement: bottom
+                showLegend: true
+              tooltip:
+                hideZeros: false
+                mode: single
+                sort: none
+          version: 12.3.0
+    panel-5:
+      kind: Panel
+      spec:
+        data:
+          kind: QueryGroup
+          spec:
+            queries:
+              - kind: PanelQuery
+                spec:
+                  hidden: false
+                  query:
+                    group: prometheus
+                    kind: DataQuery
+                    spec:
+                      editorMode: code
+                      expr: n8n_active_workflow_count
+                      instant: false
+                      legendFormat: __auto
+                      range: true
+                    version: v0
+                  refId: A
+            queryOptions: {}
+            transformations:
+              - kind: organize
+                spec:
+                  id: organize
+                  options:
+                    excludeByName:
+                      Time: true
+                      Value: false
+                      __name__: true
+                      instance: true
+                      job: true
+                      major: true
+                      minor: true
+                      patch: true
+                    includeByName: {}
+                    indexByName: {}
+                    orderByMode: manual
+                    renameByName: {}
+        description: ''
+        id: 5
+        links: []
+        title: Active workflows
+        transparent: true
+        vizConfig:
+          group: stat
+          kind: VizConfig
+          spec:
+            fieldConfig:
+              defaults:
+                thresholds:
+                  mode: absolute
+                  steps:
+                    - color: green
+                      value: 0
+                    - color: red
+                      value: 80
+              overrides: []
+            options:
+              colorMode: value
+              graphMode: none
+              justifyMode: auto
+              orientation: auto
+              percentChangeColorMode: standard
+              reduceOptions:
+                calcs:
+                  - lastNotNull
+                fields: /.*/
+                values: false
+              showPercentChange: false
+              textMode: auto
+              wideLayout: true
+          version: 12.3.0
+  layout:
+    kind: GridLayout
+    spec:
+      items: []
+  links: []
+  liveNow: false
+  preload: false
+  tags:
+    - n8n
+    - nodejs
+    - prometheus
+  timeSettings:
+    autoRefresh: ''
+    autoRefreshIntervals:
+      - 5s
+      - 10s
+      - 30s
+      - 1m
+      - 5m
+      - 15m
+      - 30m
+      - 1h
+      - 2h
+      - 1d
+    fiscalYearStartMonth: 0
+    from: now-30m
+    hideTimepicker: false
+    timezone: browser
+    to: now
+  title: n8n System Health Overview
+  variables: []
+status: {}
