@@ -87,3 +87,6 @@ scrape_configs:
 
 ## Notes
 This dashboard is a system-level complement to the PostgreSQL workflow analytics dashboard.
+
+For n8n Cloud, which has no `/metrics` endpoint and no database access, use the
+[n8n data source plugin](https://grafana.com/grafana/plugins/nluecke-n8n-datasource/). It works with the n8n public API and needs only a URL and an API key.
