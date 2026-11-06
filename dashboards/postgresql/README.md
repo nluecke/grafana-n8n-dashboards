@@ -3,6 +3,11 @@
 A structured Grafana dashboard for analyzing n8n workflow and execution performance using the PostgreSQL database backend.  
 It complements the system-level Prometheus dashboard by focusing on workflow quality, throughput, errors, and trends.
 
+> **Using n8n Cloud, or no access to the n8n database?** This dashboard needs direct PostgreSQL access,
+> which n8n Cloud does not offer. Use the [n8n data source plugin](https://grafana.com/grafana/plugins/nluecke-n8n-datasource/)
+> instead: it reads workflows, executions and Insights from the n8n public API with only a URL and an API key,
+> and includes its own dashboard.
+
 ## Overview
 
 This dashboard provides analytical insights into your n8n automation system, including workflow statistics, execution performance, error hotspots, queue depth, and long-running executions.
@@ -60,7 +65,7 @@ This dashboard provides analytical insights into your n8n automation system, inc
 ### 1. Configure PostgreSQL Datasource
 In Grafana:
 
-1. Go to **Configuration → Data Sources → Add data source**
+1. Go to **Connections → Data sources → Add new data source**
 2. Select **PostgreSQL**
 3. Configure:
 ```
@@ -96,6 +101,3 @@ Main datasets:
 ## Notes
 
 This dashboard is intended for workflow-level observability and pairs naturally with the system-level Prometheus dashboard.
-
-For n8n Cloud, which has no `/metrics` endpoint and no database access, use the
-[n8n data source plugin](https://grafana.com/grafana/plugins/nluecke-n8n-datasource/). It works with the n8n public API and needs only a URL and an API key.

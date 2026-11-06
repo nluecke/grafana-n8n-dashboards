@@ -2,6 +2,10 @@
 
 A Grafana dashboard providing real-time observability into the n8n Node.js runtime, system resources, event loop health, memory usage, CPU load, and process stability via Prometheus.
 
+> **Using n8n Cloud?** n8n Cloud has no `/metrics` endpoint, so this dashboard only works with self-hosted n8n.
+> For n8n Cloud use the [n8n data source plugin](https://grafana.com/grafana/plugins/nluecke-n8n-datasource/):
+> it reads workflows, executions and Insights from the n8n public API with only a URL and an API key.
+
 ## Overview
 
 This dashboard focuses on low-level system and runtime metrics from n8n’s Prometheus endpoint.  
@@ -87,6 +91,3 @@ scrape_configs:
 
 ## Notes
 This dashboard is a system-level complement to the PostgreSQL workflow analytics dashboard.
-
-For n8n Cloud, which has no `/metrics` endpoint and no database access, use the
-[n8n data source plugin](https://grafana.com/grafana/plugins/nluecke-n8n-datasource/). It works with the n8n public API and needs only a URL and an API key.
